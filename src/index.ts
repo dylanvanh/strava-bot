@@ -109,7 +109,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("*/15 * * * *", async () => {
   try {
     console.log("Cron executing!");
     const cleanupResult = await hideDuplicateIndoorRides();
