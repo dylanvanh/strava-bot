@@ -6,18 +6,9 @@ export interface StravaActivitySummary {
   id: number;
   name: string;
   type: string;
-  sport_type: string;
   start_date: string;
-  start_date_local: string;
-  moving_time: number;
-  elapsed_time: number;
-  manual: boolean;
+  distance: number;
   private: boolean;
-  external_id: string | null;
-  has_heartrate: boolean;
-  average_heartrate?: number;
-  max_heartrate?: number;
-  total_photo_count: number;
 }
 
 interface TokenResponse {
@@ -136,15 +127,34 @@ class StravaClient extends ApiClient {
   // The strava api doesnt support deleting, so have to update to private
   async updateActivity(
     activityId: number,
-    updates: { private?: boolean; name?: string; description?: string },
+    updates: {
+      hide_from_home?: boolean;
+      name?: string;
+      description?: string;
+      commute?: boolean;
+      trainer?: boolean;
+      sport_type?: string;
+      gear_id?: string;
+    },
   ): Promise<StravaActivitySummary> {
     try {
-      return await this.put<StravaActivitySummary>(
+      console.log(
+        `Making PUT request to /activities/${activityId} with:`,
+        JSON.stringify(updates, null, 2),
+      );
+      const result = await this.put<StravaActivitySummary>(
         `/activities/${activityId}`,
         updates,
       );
-    } catch (error) {
-      console.error(`Error updating activity ${activityId}:`, error);
+      console.log(`Update successful for activity ${activityId}`);
+      return result;
+    } catch (error: any) {
+      console.error(`Error updating activity ${activityId}:`, {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+      });
       throw error;
     }
   }

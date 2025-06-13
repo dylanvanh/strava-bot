@@ -2,6 +2,7 @@ import cron from "node-cron";
 import express from "express";
 import { env } from "./config/env.js";
 import StravaClient, { StravaActivitySummary } from "./lib/strava-client.js";
+import { all } from "axios";
 
 const app = express();
 const stravaClient = new StravaClient();
@@ -28,14 +29,10 @@ interface CleanupResult {
 }
 
 function isIndoorBikeActivity(activity: StravaActivitySummary): boolean {
-  const activityNameLowercase = activity.name.toLowerCase();
   const isRideType = activity.type === BIKE_RIDE_ACTIVITY_TYPE;
-  const hasIndoorKeywords =
-    activityNameLowercase.includes("indoor") ||
-    activityNameLowercase.includes("bike");
-  const isManualEntry = !activity.external_id;
+  const isZeroDistance = activity.distance === 0;
 
-  return isRideType && (hasIndoorKeywords || isManualEntry);
+  return isRideType && isZeroDistance;
 }
 
 function areActivitiesWithinOneHour(
@@ -88,8 +85,9 @@ async function hideDuplicateIndoorRides(): Promise<CleanupResult> {
       });
 
       await stravaClient.updateActivity(indoorBikeActivity.id, {
-        private: true,
+        hide_from_home: true,
       });
+
       hiddenActivityIds.push(indoorBikeActivity.id);
     }
   }
