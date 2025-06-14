@@ -1,10 +1,10 @@
-import cron from "node-cron";
 import express from "express";
-import { env } from "./config/env.js";
-import StravaClient, { StravaActivitySummary } from "./lib/strava-client.js";
-import { all } from "axios";
+import { env } from "../src/config/env.js";
+import StravaClient, {
+  StravaActivitySummary,
+} from "../src/lib/strava-client.js";
 
-const app = express();
+export const app = express();
 const stravaClient = new StravaClient();
 
 const VIRTUAL_RIDE_ACTIVITY_TYPE = "VirtualRide" as const;
@@ -97,9 +97,10 @@ async function hideDuplicateIndoorRides(): Promise<CleanupResult> {
 
 app.get("/", async (req, res) => {
   try {
-    await hideDuplicateIndoorRides();
+    const result = await hideDuplicateIndoorRides();
     res.json({
       success: true,
+      ...result,
     });
   } catch (error) {
     res.status(500).json({
@@ -109,26 +110,4 @@ app.get("/", async (req, res) => {
   }
 });
 
-if (env.ENABLE_CRON) {
-  console.log("Cron job enabled - will run every 15 minutes");
-  cron.schedule("*/15 * * * *", async () => {
-    try {
-      console.log("Cron executing!");
-      const cleanupResult = await hideDuplicateIndoorRides();
-      if (cleanupResult.hidden.length > 0) {
-        console.log(
-          `Hidden ${cleanupResult.hidden.length} duplicate activities`,
-        );
-      }
-    } catch (error) {
-      console.error(
-        "Cleanup failed:",
-        error instanceof Error ? error.message : String(error),
-      );
-    }
-  });
-}
-
-app.listen(env.PORT, () => {
-  console.log(`Server running on port ${env.PORT}`);
-});
+export default app;

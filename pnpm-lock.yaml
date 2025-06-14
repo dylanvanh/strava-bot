@@ -20,9 +20,6 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
-      node-cron:
-        specifier: ^4.1.0
-        version: 4.1.0
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -36,9 +33,6 @@ importers:
       '@types/node':
         specifier: ^22.13.9
         version: 22.13.9
-      '@types/node-cron':
-        specifier: ^3.0.11
-        version: 3.0.11
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.13.9)(typescript@5.8.3)
@@ -262,9 +256,6 @@ packages:
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
-
-  '@types/node-cron@3.0.11':
-    resolution: {integrity: sha512-0ikrnug3/IyneSHqCBeslAhlK2aBfYek1fGo4bP4QnZPmiqSGRK+Oy7ZMisLWkesffJvQ1cqAcBnJC+8+nxIAg==}
 
   '@types/node@22.13.9':
     resolution: {integrity: sha512-acBjXdRJ3A6Pb3tqnw9HZmyR3Fiol3aGxRCK1x3d+6CDAMjl7I649wpSd+yNURCjbOUGu9tqtLKnTGxmK6CyGw==}
@@ -535,10 +526,6 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
-  node-cron@4.1.0:
-    resolution: {integrity: sha512-OS+3ORu+h03/haS6Di8Qr7CrVs4YaKZZOynZwQpyPZDnR3tqRbwJmuP2gVR16JfhLgyNlloAV1VTrrWlRogCFA==}
-    engines: {node: '>=6.0.0'}
-
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
@@ -805,8 +792,6 @@ snapshots:
   '@types/http-errors@2.0.4': {}
 
   '@types/mime@1.3.5': {}
-
-  '@types/node-cron@3.0.11': {}
 
   '@types/node@22.13.9':
     dependencies:
@@ -1109,8 +1094,6 @@ snapshots:
   ms@2.1.3: {}
 
   negotiator@0.6.3: {}
-
-  node-cron@4.1.0: {}
 
   object-inspect@1.13.4: {}
 
