@@ -15,6 +15,7 @@ export const env = createEnv({
     STRAVA_INITIAL_REFRESH_TOKEN: z
       .string()
       .min(1, "Strava Refresh Token is required"),
+    ENABLE_CRON: z.coerce.boolean().default(false),
   },
 
   clientPrefix: "PUBLIC_",

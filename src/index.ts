@@ -109,20 +109,25 @@ app.get("/", async (req, res) => {
   }
 });
 
-cron.schedule("*/15 * * * *", async () => {
-  try {
-    console.log("Cron executing!");
-    const cleanupResult = await hideDuplicateIndoorRides();
-    if (cleanupResult.hidden.length > 0) {
-      console.log(`Hidden ${cleanupResult.hidden.length} duplicate activities`);
+if (env.ENABLE_CRON) {
+  console.log("Cron job enabled - will run every 15 minutes");
+  cron.schedule("*/15 * * * *", async () => {
+    try {
+      console.log("Cron executing!");
+      const cleanupResult = await hideDuplicateIndoorRides();
+      if (cleanupResult.hidden.length > 0) {
+        console.log(
+          `Hidden ${cleanupResult.hidden.length} duplicate activities`,
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Cleanup failed:",
+        error instanceof Error ? error.message : String(error),
+      );
     }
-  } catch (error) {
-    console.error(
-      "Cleanup failed:",
-      error instanceof Error ? error.message : String(error),
-    );
-  }
-});
+  });
+}
 
 app.listen(env.PORT, () => {
   console.log(`Server running on port ${env.PORT}`);
